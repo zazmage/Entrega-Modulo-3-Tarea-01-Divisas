@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <title>Conversor de divisas</title>
+</head>
+
+<body>
+  <main>
+    <div class='container' id='main-container'>
+      <img class='image' src="img/currency-svgrepo-com.svg" alt="Cambio de divisa">
+      <form class='general-form' id='currency-form' action="">
+        <input class="general-text-box" id='amount-text-box' type="number" min="0" placeholder="Cantidad de dinero">
+        <div class="container-selection">
+          <select class="selection-list" name="" id="select-box-1"></select>
+          <select class="selection-list" name="" id="select-box-2"></select>
+          <button class="play-button" type="button" id='convert-button'>Convertir</button>
+        </div>
+      </form>
+      <div class="message-box" id="result-box" hidden></div>
+    </div>
+  </main>
+  <script src="scripts/script.js"></script>
+</body>
+
+</html>
