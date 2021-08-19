@@ -1,3 +1,4 @@
+// Fill the content of the selection lists with the given currency array
 const fillSelectBox = (list, id) => {
   let selectBox = document.getElementById(id);
   let fragment = document.createDocumentFragment();
@@ -10,6 +11,7 @@ const fillSelectBox = (list, id) => {
   selectBox.appendChild(fragment);
 };
 
+// Returns a string of plural text
 const pluralizeText = (text) => {
   let textList = text.split(" ");
   let finalText = "";
@@ -24,6 +26,7 @@ const pluralizeText = (text) => {
   return finalText;
 };
 
+// Perform error handling and call the addMessage function
 const currencyExchange = () => {
   let currency1 = document.getElementById("select-box-1").value;
   let currency2 = document.getElementById("select-box-2").value;
@@ -54,6 +57,8 @@ const currencyExchange = () => {
   }
 };
 
+// Add a message to the page as an HTML object.
+// Create the button "cleanButton", which deletes the previous message.
 const addMessage = (type, text) => {
   let messageBox = document.getElementById("result-box");
   let fragment = document.createDocumentFragment();
@@ -88,6 +93,7 @@ const addMessage = (type, text) => {
   });
 };
 
+// Main currency array.
 let moneda = [
   "Elige tu moneda",
   "Dolar",
@@ -97,6 +103,7 @@ let moneda = [
   "Libra Esterlina",
 ];
 
+// Currency pair values array.
 let currencyPairs = [
   ["Dolar", "Dolar", 1],
   ["Dolar", "Peso Mexicano", 19.97],
@@ -129,7 +136,7 @@ let currencyPairs = [
   ["Libra Esterlina", "Libra Esterlina", 1],
 ];
 
-pluralizeText("Peso Colombiano");
+// Function calls.
 
 fillSelectBox(moneda, "select-box-1");
 fillSelectBox(moneda, "select-box-2");

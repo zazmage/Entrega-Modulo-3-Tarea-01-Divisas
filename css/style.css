@@ -7,8 +7,6 @@
   --secundary-color: #8fa3b6;
   --select-primary-color: #70ad47;
   --select-primary-color-brigth: #8ac066;
-  --select-primary-color-complementary: #8447ad;
-  --select-primary-color-complementary-brigth: #bf9dd7;
 }
 
 * {
@@ -122,7 +120,7 @@ body {
 
 .message-box {
   background-color: var(--select-primary-color-brigth);
-  width: 50%;
+  width: 70%;
   margin-right: auto;
   margin-left: auto;
   border-radius: 8px;
