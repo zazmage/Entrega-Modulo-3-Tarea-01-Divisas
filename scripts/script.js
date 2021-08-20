@@ -61,7 +61,6 @@ const currencyExchange = () => {
 // Create the button "cleanButton", which deletes the previous message.
 const addMessage = (type, text) => {
   let messageBox = document.getElementById("result-box");
-  let fragment = document.createDocumentFragment();
   let message = document.createElement("p");
   let cleanButton = document.createElement("input");
   messageBox.hidden = false;
@@ -75,8 +74,7 @@ const addMessage = (type, text) => {
   } else {
     message.innerHTML = text;
   }
-  fragment.appendChild(message);
-  messageBox.appendChild(fragment);
+  messageBox.appendChild(message);
 
   let previousButton = messageBox.getElementsByClassName("clean-button")[0];
   if (previousButton) {
