@@ -4,6 +4,8 @@
 
 ### GitHub-Page: https://zazmage.github.io/Entrega-Modulo-3-Tarea-01-Divisas/
 
+### Google-Drive: https://zazmage.github.io/Entrega-Modulo-3-Tarea-01-Divisas/
+
 ## Descripción
 
 Este repositorio ha sido creado para dar solución al reto 1 del plan de entrenamiento de Academia Geek.
