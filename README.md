@@ -6,6 +6,9 @@
 
 ### Google-Drive: https://zazmage.github.io/Entrega-Modulo-3-Tarea-01-Divisas/
 
+### Incidencias
+La plataforma no permite añadir documentos .zip como soportes para el reto por lo que dichos soportes se adjunta un enlace a Google Drive con el contenido del desarrollo del reto en un archivo .zip
+
 ## Descripción
 
 Este repositorio ha sido creado para dar solución al reto 1 del plan de entrenamiento de Academia Geek.
