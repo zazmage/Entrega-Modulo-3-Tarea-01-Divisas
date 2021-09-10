@@ -1,14 +1,7 @@
-// Fill the content of the selection lists with the given currency array
-const fillSelectBox = (list, id) => {
-  let selectBox = document.getElementById(id);
-  let fragment = document.createDocumentFragment();
-  list.forEach((i) => {
-    let currency = document.createElement("option");
-    currency.value = i;
-    currency.innerHTML = i;
-    fragment.appendChild(currency);
-  });
-  selectBox.appendChild(fragment);
+// Round a number
+const roundNumber = (num, decimals) => {
+  let fpoint = parseInt("1" + "0".repeat(decimals));
+  return Math.round((num + Number.EPSILON) * fpoint) / fpoint;
 };
 
 // Returns a string of plural text
@@ -26,35 +19,46 @@ const pluralizeText = (text) => {
   return finalText;
 };
 
-// Perform error handling and call the addMessage function
-const currencyExchange = () => {
-  let currency1 = document.getElementById("select-box-1").value;
-  let currency2 = document.getElementById("select-box-2").value;
-  let amount = document.getElementById("amount-text-box").value;
-  let exchange;
-  currencyPairs.forEach((i) => {
-    if (i[0] === currency1 && i[1] === currency2) {
-      exchange = (i[2] * amount).toFixed(2);
+// Fill the content of the selection lists with the given currency array
+const fillSelectBox = (list, id) => {
+  let selectBox = document.getElementById(id);
+  let fragment = document.createDocumentFragment();
+  list.forEach((i) => {
+    let currency = document.createElement("option");
+    currency.value = i;
+    currency.innerHTML = i;
+    fragment.appendChild(currency);
+  });
+  selectBox.appendChild(fragment);
+};
+
+// Correctly create the api url depending on the selected currencies
+const getApiUrl = (currency1, currency2) => {
+  const currencyAcronymArray = [
+    ["Dolar", "USD"],
+    ["Peso Mexicano", "MXN"],
+    ["Peso Colombiano", "COP"],
+    ["Euro", "EUR"],
+    ["Libra Esterlina", "GBP"],
+  ];
+  let currencyAcronym1;
+  let currencyAcronym2;
+  currencyAcronymArray.forEach((i) => {
+    if (i[0] === currency1) {
+      currencyAcronym1 = i[1];
+    }
+    if (i[0] === currency2) {
+      currencyAcronym2 = i[1];
     }
   });
-  if (currency1 !== "Elige tu moneda" && currency2 !== "Elige tu moneda") {
-    if (amount) {
-      if (exchange > 0) {
-        addMessage(
-          "result",
-          `${amount} ${pluralizeText(
-            currency1
-          )} son ${exchange} ${pluralizeText(currency2)}`
-        );
-      } else {
-        addMessage("error", "Ingrese un número mayor que 0");
-      }
-    } else {
-      addMessage("error", "Ingrese un número");
-    }
-  } else {
-    addMessage("error", "Seleccione una moneda en cada cuadro");
-  }
+  return [
+    currencyAcronym1 + "_" + currencyAcronym2,
+    "https://free.currconv.com/api/v7/convert?q=" +
+      currencyAcronym1 +
+      "_" +
+      currencyAcronym2 +
+      "&compact=ultra&apiKey=38f39210efb5ed84ff62",
+  ];
 };
 
 // Add a message to the page as an HTML object.
@@ -91,6 +95,47 @@ const addMessage = (type, text) => {
   });
 };
 
+// Main function, makes requests to the currency pairs api, the currency conversion calculation and calls the relevant functions to display results on the screen.
+async function currencyExchange() {
+  const currency1 = document.querySelector("#select-box-1").value;
+  const currency2 = document.querySelector("#select-box-2").value;
+  const amount = document.querySelector("#amount-text-box").value;
+  const apiUrl = getApiUrl(currency1, currency2);
+
+  if (currency1 !== "Elige tu moneda" && currency2 !== "Elige tu moneda") {
+    if (amount) {
+      if (amount > 0) {
+        try {
+          let res = await fetch(apiUrl[1]),
+            json = await res.json();
+          let exchange = roundNumber(json[apiUrl[0]] * amount, 2);
+          addMessage(
+            "result",
+            `${amount} ${pluralizeText(
+              currency1
+            )} son ${exchange} ${pluralizeText(currency2)}`
+          );
+
+          // Api conection error handling
+          if (!res.ok) throw { status: res.status, statusText: res.statusText };
+        } catch (err) {
+          console.log(err);
+          let message = err.statusText || "Ocurrió un error";
+          addMessage("error", message);
+        } finally {
+          console.log("Operación finalizada");
+        }
+      } else {
+        addMessage("error", "Ingrese un número mayor que 0");
+      }
+    } else {
+      addMessage("error", "Ingrese un número");
+    }
+  } else {
+    addMessage("error", "Seleccione una moneda en cada cuadro");
+  }
+}
+
 // Main currency array.
 let moneda = [
   "Elige tu moneda",
@@ -101,41 +146,7 @@ let moneda = [
   "Libra Esterlina",
 ];
 
-// Currency pair values array.
-let currencyPairs = [
-  ["Dolar", "Dolar", 1],
-  ["Dolar", "Peso Mexicano", 19.97],
-  ["Dolar", "Peso Colombiano", 3879],
-  ["Dolar", "Euro", 0.85],
-  ["Dolar", "Libra Esterlina", 0.73],
-
-  ["Peso Mexicano", "Dolar", 0.05],
-  ["Peso Mexicano", "Peso Mexicano", 1],
-  ["Peso Mexicano", "Peso Colombiano", 194.39],
-  ["Peso Mexicano", "Euro", 0.043],
-  ["Peso Mexicano", "Libra Esterlina", 0.036],
-
-  ["Peso Colombiano", "Dolar", 0.00026],
-  ["Peso Colombiano", "Peso Mexicano", 0.0052],
-  ["Peso Colombiano", "Peso Colombiano", 1],
-  ["Peso Colombiano", "Euro", 0.00022],
-  ["Peso Colombiano", "Libra Esterlina", 0.00019],
-
-  ["Euro", "Dolar", 1.17],
-  ["Euro", "Peso Mexicano", 23.41],
-  ["Euro", "Peso Colombiano", 4538.43],
-  ["Euro", "Euro", 1],
-  ["Euro", "Libra Esterlina", 0.85],
-
-  ["Libra Esterlina", "Dolar", 1.38],
-  ["Libra Esterlina", "Peso Mexicano", 27.5],
-  ["Libra Esterlina", "Peso Colombiano", 5333.12],
-  ["Libra Esterlina", "Euro", 1.18],
-  ["Libra Esterlina", "Libra Esterlina", 1],
-];
-
 // Function calls.
-
 fillSelectBox(moneda, "select-box-1");
 fillSelectBox(moneda, "select-box-2");
 

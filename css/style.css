@@ -154,11 +154,3 @@ body {
 .clean-button:active {
   box-shadow: 0 0 5px 2px var(--primary-color-brigth);
 }
-
-/* .message-box {
-  background-color: turquoise;
-} */
-/*
-.message-text {
-  color: blueviolet;
-} */
